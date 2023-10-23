@@ -21,3 +21,7 @@
 *.out
 *.tdo
 *.toc
+.vscode/*
+svg-inkscape/*
+*.run.xml
+*.bcf

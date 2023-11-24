@@ -72,6 +72,12 @@
   \renewcommand*{\declarationname}{Ehrenwörtliche Erklärung}   % Declaration of honor
 }
 
+\addto{\extrasngerman}{%
+  \def\sectionautorefname{Kapitel}%                              1st level sections should be called "Kapitel"
+  \def\subsectionautorefname{Abschnitt}%                         2nd level sections should be called "Abschnitt"
+  \def\subsubsectionautorefname{Unterabschnitt}%                 3rd level sections should be called "Unterabschnitt"
+}
+
 % Bibliography
 \addbibresource{Verzeichnisse/Literaturverzeichnis.bib}
 \DefineBibliographyStrings{ngerman}{
@@ -113,6 +119,8 @@
 \setlength{\cftfignumwidth}{2cm}
 \setlength{\cftfigindent}{0cm}
 
+\AtBeginEnvironment{figure}{\vspace{1em}}               % Increase spacing of images from the text above
+
 % Tables
 \renewcommand{\cfttabpresnum}{\tablename~}
 \renewcommand{\cfttabaftersnum}{:}
@@ -127,7 +135,7 @@
 \setlength{\cftlistingsindent}{0cm}
 
 \setlength{\parindent}{0cm}                             % Don't indent start of paragraph
-\setlength{\parskip}{6pt}                               % Lines are seperated by 6pt
+\setlength{\parskip}{6pt}                               % Lines are separated by 6pt
 
 \setlength{\headheight}{1.25cm}
 \setlength{\footskip}{1cm}
@@ -137,18 +145,28 @@
 %                    Custom counters & commands
 % -------------------------------------------------------------------
 
+% Custom acronym patches:
+%   - count usage (used for on-demand list of acronyms)
+%   - provide shorter aliases for commonly used macros
 \newcounter{countacronym}
 \DeclareTotalCounter{countacronym}
-\newcommand*{\acr}[1]{\acrshort{#1}\stepcounter{countacronym}}
-\newcommand*{\Acr}[1]{\acrlong{#1}\stepcounter{countacronym}}
+\pretocmd{\acrshort}{\stepcounter{countacronym}}{}{}
+\pretocmd{\acrlong}{\stepcounter{countacronym}}{}{}
+\pretocmd{\acrfull}{\stepcounter{countacronym}}{}{}
+\newcommand*{\acr}[1]{\acrshort{#1}}
+\newcommand*{\Acr}[1]{\acrlong{#1}}
 
+% Custom nomenclature patches:
+%   - count usage of actual entries through \nomen (used for on-demand nomenclature)
+%   - provide cleaner writing interface with pre-made abstractions
 \newcounter{countnomen}
 \DeclareTotalCounter{countnomen}
 \newcommand*{\nomen}[2]{\nomenclature{#1}{#2}\stepcounter{countnomen}}
 \newcommand{\nomunit}[1]{\renewcommand{\nomentryend}{\hspace*{\fill}#1}}
 \newcommand{\nomsi}[1]{\nomunit{[\si{#1}]}}
 
-% Count number of references to the glossary
+% Custom glossary patches:
+%   - count usage (used for on-demand glossary)
 \newcounter{countglossary}
 \DeclareTotalCounter{countglossary}
 \pretocmd{\Gls}{\stepcounter{countglossary}}{}{}
@@ -156,7 +174,8 @@
 \pretocmd{\Glspl}{\stepcounter{countglossary}}{}{}
 \pretocmd{\glspl}{\stepcounter{countglossary}}{}{}
 
-% Count number of citations
+% Custom citation patches:
+%   - count usage (used for on-demand bibliography)
 \newcounter{countcitation}
 \DeclareTotalCounter{countcitation}
 \pretocmd{\cite}{\stepcounter{countcitation}}{}{}
@@ -164,21 +183,16 @@
 % TODO annotations
 \newcounter{counttodo}
 \DeclareTotalCounter{counttodo}
-\newcommand{\note}[2][]{
-  \todo[color=green!25,bordercolor=green,tickmarkheight=3pt,#1]{#2}
-  \stepcounter{counttodo}
-}
-\newcommand{\unsure}[2][]{
-  \todo[color=Plum!25,bordercolor=Plum,tickmarkheight=3pt,#1]{#2}
-  \stepcounter{counttodo}
-}
-\newcommand{\change}[2][]{
-  \todo[color=blue!25,bordercolor=blue,tickmarkheight=3pt,#1]{#2}
-  \stepcounter{counttodo}
-}
+\pretocmd{\todo}{\stepcounter{counttodo}}{}{}
+\newcommand{\note}   [2][]{\todo[color=green!25,bordercolor=green,tickmarkheight=3pt,#1]{#2}}
+\newcommand{\unsure} [2][]{\todo[color=Plum!25,bordercolor=Plum,tickmarkheight=3pt,#1]{#2}}
+\newcommand{\change} [2][]{\todo[color=blue!25,bordercolor=blue,tickmarkheight=3pt,#1]{#2}}
+\newcommand{\missing}[2][]{\todo[color=red!25,bordercolor=red,tickmarkheight=3pt,#1]{#2}}
+\newcommand{\info}   [2][]{\todo[nolist,color=yellow!25,bordercolor=yellow,tickmarkheight=3pt,#1]{#2}}
 
-\newcommand{\imgref}[1]{\hyperref[#1]{Abbildung~\getrefnumber{#1}}}
-\newcommand{\tabref}[1]{\hyperref[#1]{Tabelle~\getrefnumber{#1}}}
+% Larger clickable references to page items
+\newcommand{\imgref} [1]{\hyperref[#1]{Abbildung~\getrefnumber{#1}}}
+\newcommand{\tabref} [1]{\hyperref[#1]{Tabelle~\getrefnumber{#1}}}
 \newcommand{\coderef}[1]{\hyperref[#1]{Code~\getrefnumber{#1}}}
 \newcommand{\mathref}[1]{\hyperref[#1]{Gleichung~\getrefnumber{#1}}}
-\newcommand{\secref}[1]{\hyperref[#1]{Abschnitt~\getrefnumber{#1}}}
+\newcommand{\secref} [1]{\autoref{#1}}

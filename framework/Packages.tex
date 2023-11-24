@@ -14,7 +14,7 @@
 
 \usepackage[ddmmyyyy]{datetime}               % Reformat times from LaTeX commands like \today
 
-\usepackage[usenames,dvipsnames]{xcolor}      % Support text colorization
+\usepackage[dvipsnames]{xcolor}               % Support text colorization
 
 \usepackage{colortbl}                         % Support applying colors to tables
 \usepackage{array}                            % Tables with fixed column size
@@ -23,7 +23,6 @@
 \usepackage{multirow}                         % Additional settings for \multirow
 
 \usepackage[hyphens,obeyspaces,spaces]{url}   % Allow urls to have line breaks at "-"
-\usepackage{hyperref}                         % Clickable hyperlinks in Table of Contents
 \usepackage{microtype}                        % Enable "Blocksatz"
 
 \usepackage{float}                            % Support for table H option
@@ -34,6 +33,7 @@
 \usepackage{caption}                          % Provide greater customization around captions
 \usepackage{subcaption}                       % Caption support for subfigures
 \usepackage{svg}                              % support SVG files
+\usepackage{pdfpages}                         % Include existing PDFs into the work
 
 \usepackage[onehalfspacing]{setspace}         % Set line spacing to be 1.5x the default
 \usepackage{listings}                         % Code block support for LaTeX
@@ -49,6 +49,8 @@
 
 \usepackage{ifthen}                           % Support better if statements in LaTeX
 \usepackage{etoolbox}                         % Easily patch commands
+
+\usepackage{hyperref}                         % Clickable hyperlinks in Table of Contents
 
 % Support list of acronyms and glossary
 \usepackage[
@@ -84,12 +86,13 @@
 %                 Useful packages (not used in template)
 % -------------------------------------------------------------------
 
-\usepackage{pdfpages}                         % Include existing PDFs into the work
-
-% Create electrical diagrams within LaTeX
+% Create electrical diagrams from within LaTeX
 \usepackage[
   european,
   oldvoltagedirection,
   straightvoltages,
   siunitx
 ]{circuitikz}
+
+% Annotate images with standard tikz macros
+\usepackage{tikz-imagelabels}

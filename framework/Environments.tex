@@ -103,6 +103,17 @@
   \newpage
   \tableofcontents
 
+  \newpage
+}
+{
+  % Bibliography
+  \iftotalcountcitations
+    \newpage
+    \phantomsection
+    \addcontentsline{toc}{section}{\refname}
+    \printbibliography
+  \fi
+
   \iftotalfigures
     \newpage
     \phantomsection
@@ -137,17 +148,6 @@
     \newpage
     \setglossarystyle{super}
     \printglossary[type=\acronymtype]
-  \fi
-
-  \newpage
-}
-{
-  % Bibliography
-  \iftotalcountcitations
-    \newpage
-    \phantomsection
-    \addcontentsline{toc}{section}{\refname}
-    \printbibliography
   \fi
 
   % Glossary
